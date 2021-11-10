@@ -1,0 +1,26 @@
+name: Deploy
+
+on: ["push"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_MAIL}}
+          justlogin: true
+
+      - name: Deploy the web dyno
+        uses: "akhileshns/heroku-deploy@v3.12.12"
+        with:
+          docker_heroku_process_type: web
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_MAIL}}
+          usedocker: true
