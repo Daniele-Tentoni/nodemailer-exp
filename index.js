@@ -20,10 +20,10 @@ app.get("/", (req, res) => {
   });
   transport
     .sendMail({
-      from: "Try",
+      from: `"Try" <${process.env.EMAIL}>`,
       to: process.env.DEST,
       subject: "Hello",
-      html: "Hello world!",
+      text: "Hello world!",
     })
     .then((result) => {
       console.log("Yes:", result);
