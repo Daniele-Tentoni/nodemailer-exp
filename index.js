@@ -7,7 +7,7 @@ app.use(express.urlencoded({ extended: false }));
 
 const nodemailer = require("nodemailer");
 
-app.get("/", (req, res) => {
+const send = (msg, res) => {
   const transport = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
       from: `"Try" <${process.env.EMAIL}>`,
       to: process.env.DEST,
       subject: "Hello",
-      text: "Hello world!",
+      text: msg,
     },
     function (error, result) {
       if (error) {
@@ -36,7 +36,11 @@ app.get("/", (req, res) => {
       return res.status(200).json({ result });
     }
   );
-});
+};
+
+app.get("/", (req, res) => send("Hello world!", res));
+
+app.get("/text/:msg", (req, res) => send(req.params.msg, res));
 
 const port = process.env.PORT || 12000;
 app.listen(port, () => {
