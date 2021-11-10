@@ -25,8 +25,14 @@ app.get("/", (req, res) => {
       subject: "Hello",
       html: "Hello world!",
     })
-    .then((res) => console.log("Yes:", res))
-    .catch((error) => console.error("Error:", error))
+    .then((res) => {
+      console.log("Yes:", res);
+      res.status(200).json({ res });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      res.status(500).json({ error });
+    })
     .finally((after) => console.log("After:", after));
 });
 
