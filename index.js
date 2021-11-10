@@ -25,13 +25,13 @@ app.get("/", (req, res) => {
       subject: "Hello",
       html: "Hello world!",
     })
-    .then((res) => {
-      console.log("Yes:", res);
-      res.status(200).json({ res });
+    .then((result) => {
+      console.log("Yes:", result);
+      res.status(200).json({ result });
     })
     .catch((error) => {
       console.error("Error:", error);
-      res.status(500).json({ error });
+      res.status(200).json({ error });
     })
     .finally((after) => console.log("After:", after));
 });
