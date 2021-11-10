@@ -10,6 +10,7 @@ const nodemailer = require("nodemailer");
 app.get("/", (req, res) => {
   const transport = nodemailer.createTransport({
     service: "gmail",
+    host: "smtp.gmail.com",
     auth: {
       user: process.env.EMAIL,
       pass: process.env.PASS,
@@ -18,26 +19,28 @@ app.get("/", (req, res) => {
       rejectUnauthorized: false,
     },
   });
-  transport
-    .sendMail({
+  transport.sendMail(
+    {
       from: `"Try" <${process.env.EMAIL}>`,
       to: process.env.DEST,
       subject: "Hello",
       text: "Hello world!",
-    })
-    .then((result) => {
+    },
+    function (error, result) {
+      if (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ error });
+      }
+
       console.log("Yes:", result);
-      res.status(200).json({ result });
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      res.status(200).json({ error });
-    })
-    .finally((after) => console.log("After:", after));
+      return res.status(200).json({ result });
+    }
+  );
 });
 
-app.listen(process.env.PORT, () => {
-  console.log("Application running.");
+const port = process.env.PORT || 12000;
+app.listen(port, () => {
+  console.log("Application running on http://localhost:12000");
 });
 
 module.exports = { app };
