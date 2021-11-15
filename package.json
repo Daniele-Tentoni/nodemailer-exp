@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "license": "license-check-and-add add -f .",
+    "license:check": "license-check-and-add check -f .",
     "start": "node index.js",
     "start:local": "node -r dotenv/config --trace-warnings index.js"
   },
@@ -14,6 +16,7 @@
     "nodemailer": "^6.7.0"
   },
   "devDependencies": {
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "license-check-and-add": "^4.0.3"
   }
 }
