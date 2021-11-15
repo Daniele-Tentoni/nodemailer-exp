@@ -12,7 +12,7 @@ let transport = undefined;
 const createProtocol = (username, password) =>
   new Promise(async (resolve, reject) => {
     if (typeof username !== "string" || username === "") {
-      username = process.env.USER;
+      username = process.env.EMAIL;
     }
 
     if (typeof password !== "string" || password === "") {
