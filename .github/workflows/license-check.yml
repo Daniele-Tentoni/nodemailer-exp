@@ -1,6 +1,15 @@
+# TODO: Content in this file can become a separated action.
+
 name: LICENSE lint
 
-on: ["push"]
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      mod:
+        description: "Check only or add description"
+        required: true
+        default: "check"
 
 jobs:
   lint:
@@ -12,5 +21,9 @@ jobs:
         run: npm ci
 
       - name: Check for LICENSE in each defined file
-        run: |
-          npm run license:check
+        if: ${{ github.event.inputs.name != "add" }}
+        run: npm run license:check
+
+      - name: Add LICENSE in each defined file
+        if: ${{ github.event.inputs.name == "add" }}
+        run: npm run license
