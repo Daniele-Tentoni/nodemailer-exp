@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:local": "node -r dotenv/config index.js"
+    "start:local": "node -r dotenv/config --trace-warnings index.js"
   },
   "author": "Daniele Tentoni",
   "license": "ISC",
