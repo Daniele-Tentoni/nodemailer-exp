@@ -8,6 +8,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install packages
+        run: npm ci
+
       - name: Check for LICENSE in each defined file
         run: |
           npm run license:check
