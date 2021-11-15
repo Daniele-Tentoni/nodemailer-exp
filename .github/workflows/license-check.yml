@@ -21,9 +21,9 @@ jobs:
         run: npm ci
 
       - name: Check for LICENSE in each defined file
-        if: ${{ github.event.inputs.name != "add" }}
+        if: ${{ github.event.inputs.name != 'add' }}
         run: npm run license:check
 
       - name: Add LICENSE in each defined file
-        if: ${{ github.event.inputs.name == "add" }}
+        if: ${{ github.event.inputs.name == 'add' }}
         run: npm run license
