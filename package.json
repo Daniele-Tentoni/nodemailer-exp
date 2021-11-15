@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "license": "license-check-and-add add -f .",
-    "license:check": "license-check-and-add check -f .",
+    "license": "license-check-and-add add -f ./license-check-and-add-config.json",
+    "license:check": "license-check-and-add check -f ./license-check-and-add-config.json",
     "start": "node index.js",
     "start:local": "node -r dotenv/config --trace-warnings index.js"
   },
