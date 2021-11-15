@@ -39,13 +39,6 @@ const createDefaultProtocol = () =>
     resolve(mail);
   });
 
-createDefaultProtocol()
-  .then((result) => {
-    // Here the mail is prepared.
-    console.log("Transport protocol configured.");
-  })
-  .catch((error) => console.error("Thrown an error:", error));
-
 /**
  * Send a text with transport protocol.
  * @param {*} transport Transport protocol implementation.
