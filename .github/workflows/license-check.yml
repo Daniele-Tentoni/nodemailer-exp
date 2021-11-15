@@ -1,0 +1,13 @@
+name: LICENSE lint
+
+on: ["push"]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Check for LICENSE in each defined file
+        run: |
+          npm run license:check
