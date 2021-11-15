@@ -6,19 +6,45 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const nodemailer = require("nodemailer");
+const Mail = require("nodemailer/lib/mailer");
 
+/*
+app.get("/text/:msg", (req, res) =>
+  send(req.params.msg, res)
+    .then((result) => res.status(200).json({ result }))
+    .catch((error) => res.status(500).json({ error }))
+);
+*/
+const mailRouter = require("./routes/mail.routes");
+app.use("/text", mailRouter);
+
+/**
+ * Start the creation of the nodemailer transport.
+ * @returns {Promise<Mail>} Promise for the future nodemailer.
+ */
 const createDefaultProtocol = () =>
-  nodemailer.createTransport({
-    service: "gmail",
-    host: "smtp.gmail.com",
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASS,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
+  new Promise(async (resolve, reject) => {
+    const { EMAIL, PASS } = process.env.EMAIL;
+    const mail = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      auth: {
+        user: EMAIL,
+        pass: PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+    resolve(mail);
   });
+
+createDefaultProtocol()
+  .then((result) => {
+    // Here the mail is prepared.
+    console.log("Transport protocol configured.");
+  })
+  .catch((error) => console.error("Thrown an error:", error));
 
 /**
  * Send a text with transport protocol.
@@ -52,16 +78,12 @@ const send = (msg) => {
   return sendMailWithText(transport, msg);
 };
 
-app.get("/", (req, res) =>
-  send("Hello world!", res)
-    .then((result) => res.status(200).json({ result }))
-    .catch((error) => res.status(500).json({ error }))
-);
-
-app.get("/text/:msg", (req, res) =>
-  send(req.params.msg, res)
-    .then((result) => res.status(200).json({ result }))
-    .catch((error) => res.status(500).json({ error }))
+app.get("/", (_, res) =>
+  res.status(200).json({
+    services: ["nodemailer"],
+    msg_endpoints: ["/text/:msg", ":service/text/:msg"],
+    loop_endpoints: ["/loop/:times/:msg", ":service/loop/:times/:msg"],
+  })
 );
 
 app.get("/loop/:times/:msg", async (req, res) => {
@@ -87,5 +109,17 @@ const port = process.env.PORT || 12000;
 app.listen(port, () => {
   console.log("Application running on http://localhost:12000");
 });
+
+// Finish configuration steps.
+
+/*
+1. Prepare transport object
+2. Prepare https://github.com/eleith/emailjs object.
+3. Create a route to obtain the status of the previous services
+4. Create a params to declare what service use
+5. If the param is not given, choose a random service
+6. In the info route, give examples of urls.
+7. Add the beer license.
+*/
 
 module.exports = { app };
